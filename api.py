@@ -227,5 +227,5 @@ def remove_card_deck(id_deck, id_card):
 	publicar(data=data, queue=q7)
 	return "Carta {} eliminada exitosamente del mazo {}".format(id_card, id_deck)
 
-if __name__ == '__main__':
-	app.run(debug=False, host='0.0.0.0')
+#if __name__ == '__main__':
+#	app.run(debug=False, host='0.0.0.0')
