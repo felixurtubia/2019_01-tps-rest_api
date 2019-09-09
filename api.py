@@ -171,7 +171,7 @@ def hello_world():
 def show_deck_info(id):
 	# Parse CLODUAMQP_URL (fallback to localhost)
 	data = {"id": id}
-	respuesta = RpcClient_q6.call(data)
+	respuesta = RpcClient_q6().call(data)
 	return respuesta
 
 #Listar los mazos de un usuario (q8)
