@@ -1,7 +1,26 @@
 language: python
 python:
-  - "3.7"
+  - "3.6"
+services:
+  - docker
 script: pytest
+
+
+stages:
+  - unit test
+  - integration test
+  - zap owasp test
+
+
+jobs:
+  include:
+    - stage: unit test
+      script: pytest #Agregar modulo de pruebas unitarias
+    - stage: integration test
+      script: pytest #Agregar modulo de pruebas de integracion
+    - stage: zap owasp test:
+      script: pytest #Buscar script
+
 deploy:
   provider: heroku
   api_key: 6d119b62-8c80-46c1-b021-b82dc30ca88e

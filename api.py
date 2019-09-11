@@ -8,6 +8,31 @@ app = Flask(__name__)
 # export FLASK_APP=api.py
 # flask run
 
+q1='crear_mazo'
+q1_r='crear_mazo_respuesta'
+q2='crear_mazo_secundario'
+q2_r= 'crear_mazo_secundario_respuesta'
+q3='agregar_carta_mazo_secundario'
+q3_r='agregar_carta_mazo_secundario_respuesta'
+q4='editar_mazo_usuario'
+q4_r='editar_mazo_usuario_respuesta'
+q5='remover_mazo'
+q5_r='remover_mazo_respuesta'
+q6='leer_mazo_usuario'
+q6_r='leer_mazo_usuario_respuesta'
+q7='remover_carta_mazo_secundario'
+q7_r='remover_carta_mazo_secundario_respuesta'
+q8 = 'listar_mazo_usuario'
+q8_r = 'listar_mazo_usuario_respuesta'
+
+q11 = 'ver_informacion_basica'
+q11_r = 'ver_informacion_basica_respuesta'
+q12 = 'ver_informacion_detallada'
+q12_r = 'ver_informacion_detallada_respuesta'
+q13 = 'busqueda_parcial'
+q13_r = 'busqueda_parcial_respuesta'
+q14 = 'busqueda_especifica' 
+q14_r = 'busqueda_especifica_respuesta'
 
 def get_data(channel, method, properties, body):
 	
@@ -29,6 +54,22 @@ def publicar(data, queue):
 		exchange='', 
 		routing_key=queue, 
 		body=json.dumps(data)
+		)
+	connection.close()
+	return
+
+def publicar_string(data, queue):
+	url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
+	url = urlparse(url_str)
+	params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],
+	    credentials=pika.PlainCredentials(url.username, url.password))
+	connection = pika.BlockingConnection(params)
+	channel = connection.channel()
+	channel.queue_declare(queue=queue)
+	channel.basic_publish(
+		exchange='', 
+		routing_key=queue, 
+		body=data
 		)
 	connection.close()
 	return
@@ -70,7 +111,6 @@ class RpcClient_q8(object):
 			self.connection.process_data_events()
 		return self.response
 
-
 class RpcClient_q6(object):
 
 	def __init__(self):
@@ -108,6 +148,115 @@ class RpcClient_q6(object):
 			self.connection.process_data_events()
 		return self.response		
 
+class RpcClient_q11(object):
+	def __init__(self):
+		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
+		url = urlparse(url_str)
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		self.connection = pika.BlockingConnection(params)
+		self.channel = self.connection.channel()
+
+		result = self.channel.queue_declare(queue=q11, exclusive=False)
+		self.callback_queue = result.method.queue
+
+		self.channel.basic_consume(
+			queue=self.callback_queue,
+			on_message_callback=self.on_response,
+			auto_ack=True)
+
+	def on_response(self, ch, method, props, body):
+		if self.corr_id == props.correlation_id:
+			self.response = body
+
+	def call(self, data):
+		self.response = None
+		self.corr_id = str(uuid.uuid4())
+		self.channel.basic_publish(
+			exchange='',
+			routing_key=q11,
+			properties=pika.BasicProperties(
+				reply_to=self.callback_queue,
+				correlation_id=self.corr_id,
+			),
+			body=data
+			)
+		while self.response is None:
+			self.connection.process_data_events()
+		return self.response
+
+class RpcClient_q12(object):
+	def __init__(self):
+		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
+		url = urlparse(url_str)
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		self.connection = pika.BlockingConnection(params)
+		self.channel = self.connection.channel()
+
+		result = self.channel.queue_declare(queue=q12, exclusive=False)
+		self.callback_queue = result.method.queue
+
+		self.channel.basic_consume(
+			queue=self.callback_queue,
+			on_message_callback=self.on_response,
+			auto_ack=True)
+
+	def on_response(self, ch, method, props, body):
+		if self.corr_id == props.correlation_id:
+			self.response = body
+
+	def call(self, data):
+		self.response = None
+		self.corr_id = str(uuid.uuid4())
+		self.channel.basic_publish(
+			exchange='',
+			routing_key=q12,
+			properties=pika.BasicProperties(
+				reply_to=self.callback_queue,
+				correlation_id=self.corr_id,
+			),
+			body=data
+			)
+		while self.response is None:
+			self.connection.process_data_events()
+		return self.response
+
+class RpcClient_q13(object):
+	def __init__(self):
+		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
+		url = urlparse(url_str)
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		self.connection = pika.BlockingConnection(params)
+		self.channel = self.connection.channel()
+
+		result = self.channel.queue_declare(queue=q13, exclusive=False)
+		self.callback_queue = result.method.queue
+
+		self.channel.basic_consume(
+			queue=self.callback_queue,
+			on_message_callback=self.on_response,
+			auto_ack=True)
+
+	def on_response(self, ch, method, props, body):
+		if self.corr_id == props.correlation_id:
+			self.response = body
+
+	def call(self, data):
+		self.response = None
+		self.corr_id = str(uuid.uuid4())
+		self.channel.basic_publish(
+			exchange='',
+			routing_key=q13,
+			properties=pika.BasicProperties(
+				reply_to=self.callback_queue,
+				correlation_id=self.corr_id,
+			),
+			body=json.dumps(data)
+			)
+		while self.response is None:
+			self.connection.process_data_events()
+		return self.response
+
+
 def publicar_recibir(data, queue_out, queue_in):
 	"""
 	receives data in any data type and sends a json object
@@ -141,23 +290,6 @@ def publicar_recibir(data, queue_out, queue_in):
 	connection.close()
 	return body
 
-
-q1='crear_mazo'
-q1_r='crear_mazo_respuesta'
-q2='crear_mazo_secundario'
-q2_r= 'crear_mazo_secundario_respuesta'
-q3='agregar_carta_mazo_secundario'
-q3_r='agregar_carta_mazo_secundario_respuesta'
-q4='editar_mazo_usuario'
-q4_r='editar_mazo_usuario_respuesta'
-q5='remover_mazo'
-q5_r='remover_mazo_respuesta'
-q6='leer_mazo_usuario'
-q6_r='leer_mazo_usuario_respuesta'
-q7='remover_carta_mazo_secundario'
-q7_r='remover_carta_mazo_secundario_respuesta'
-q8 = 'listar_mazo_usuario'
-q8_r = 'listar_mazo_usuario_respuesta'
 
 
 
@@ -227,5 +359,29 @@ def remove_card_deck(id_deck, id_card):
 	publicar(data=data, queue=q7)
 	return "Carta {} eliminada exitosamente del mazo {}".format(id_card, id_deck)
 
+
+#Ver informacion detallada de una carta en específico, por su nombre (q12)
+@app.route('/card/detail/<id>')
+def view_detailed_info(id):
+	#data = {"name": name}
+	#publicar_string(data=id, queue=q12)
+	#return "Se ha enviado mensaje de carta :D"
+	respuesta = RpcClient_q12().call(id)
+	return respuesta
+
+# q11 = 'ver_informacion_basica'
+# Ver información básica de una carta en específico(q11)
+@app.route('/card/basic_info/<id>')
+def view_basic_info(id):
+	respuesta = RpcClient_q11().call(id)
+	return respuesta
+
+#q13 Búsqueda parcial de cartas, debería entregar una lista de cartas (q13)
+@app.route('/card/search/<field>')
+def search_card(field):
+	respuesta = RpcClient_q13().call(field)
+	return respuesta
+
 if __name__ == '__main__':
 	app.run()
+
