@@ -37,6 +37,9 @@ Rutas:
   https://tps-restfulapi.herokuapp.com/card/detail/<[card_name/card_id]>
   
 9. Busqueda general de cartas
+
   https://tps-restfulapi.herokuapp.com/card/search/<card_name>
+  
 10. Buscar información básica de carta (nombre e imagen para display)
+
   https://tps-restfulapi.herokuapp.com/card/basic_info/<[card_name/card_id]>
