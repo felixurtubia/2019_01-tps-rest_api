@@ -18,4 +18,9 @@ Rutas:
   https://tps-restfulapi.herokuapp.com/user_deck/<id_deck>
 7. Listar todos los mazos de un usuaio
   https://tps-restfulapi.herokuapp.com/user_deck/list/<id_user>
-  
+8. Buscar información detallada de carta
+  https://tps-restfulapi.herokuapp.com/card/detail/<[card_name/card_id]>
+9. Busqueda general de cartas
+  https://tps-restfulapi.herokuapp.com/card/search/<card_name>
+10. Buscar información básica de carta (nombre e imagen para display)
+  https://tps-restfulapi.herokuapp.com/card/basic_info/<[card_name/card_id]>
