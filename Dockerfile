@@ -7,9 +7,6 @@ ENV PYTHONUNBUFFERED 1
 WORKDIR .
 
 
-RUN apk update && apk add libpq
-RUN apk add --virtual .build-deps gcc python-dev musl-dev postgresql-dev
-
 
 
 COPY ./requirements.txt /requirements.txt
