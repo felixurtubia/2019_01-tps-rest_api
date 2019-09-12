@@ -32,5 +32,19 @@ def test_create_secondary_deck():
 
 	assert n_mazos_secundarios == (n_mazos_secundarios_respuesta  - 1)
 
-def delete_create_add_card_and_read_deck():
-	assert True
+def test_get_card_id():
+	print("Prueba de integración con servicio de cartas, con una carta ejemplo Exodia")
+	id_carta_sabido = 33396948
+	respuesta = json.loads(api.view_detailed_info("Exodia the Forbidden One"))
+	respuesta = respuesta[0]
+
+	assert int(respuesta['id']) == id_carta_sabido
+
+def test_get_card_id_basic():
+	print("Prueba de integración con servicio de cartas, con una carta ejemplo Exodia")
+	id_carta_sabido = 33396948
+	respuesta = json.loads(api.view_basic_info("Exodia the Forbidden One"))
+	respuesta = respuesta[0]
+
+	assert int(respuesta['id']) == id_carta_sabido
+
