@@ -79,7 +79,7 @@ class RpcClient_q8(object):
 	def __init__(self):
 		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
 		url = urlparse(url_str)
-		params = pika.ConnectionParameters(blocked_connection_timeout=20,socket_timeout=20,host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
@@ -116,7 +116,7 @@ class RpcClient_q6(object):
 	def __init__(self):
 		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
 		url = urlparse(url_str)
-		params = pika.ConnectionParameters(blocked_connection_timeout=20,socket_timeout=20,host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
@@ -152,7 +152,7 @@ class RpcClient_q11(object):
 	def __init__(self):
 		url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
 		url = urlparse(url_str)
-		params = pika.ConnectionParameters(blocked_connection_timeout=20,socket_timeout=20,host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
+		params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],credentials=pika.PlainCredentials(url.username, url.password))
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
