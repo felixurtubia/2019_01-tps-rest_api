@@ -83,7 +83,7 @@ class RpcClient_q8(object):
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
-		result = self.channel.queue_declare(queue=q8, exclusive=False)
+		result = self.channel.queue_declare('', exclusive=True)
 		self.callback_queue = result.method.queue
 
 		self.channel.basic_consume(
@@ -120,7 +120,7 @@ class RpcClient_q6(object):
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
-		result = self.channel.queue_declare(queue=q6, exclusive=False)
+		result = self.channel.queue_declare('', exclusive=True)
 		self.callback_queue = result.method.queue
 
 		self.channel.basic_consume(
@@ -156,7 +156,7 @@ class RpcClient_q11(object):
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
-		result = self.channel.queue_declare(queue=q11, exclusive=False)
+		result = self.channel.queue_declare('', exclusive=True)
 		self.callback_queue = result.method.queue
 
 		self.channel.basic_consume(
@@ -192,7 +192,7 @@ class RpcClient_q12(object):
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
-		result = self.channel.queue_declare(queue=q12, exclusive=False)
+		result = self.channel.queue_declare('', exclusive=True)
 		self.callback_queue = result.method.queue
 
 		self.channel.basic_consume(
@@ -228,7 +228,7 @@ class RpcClient_q13(object):
 		self.connection = pika.BlockingConnection(params)
 		self.channel = self.connection.channel()
 
-		result = self.channel.queue_declare(queue=q13, exclusive=False)
+		result = self.channel.queue_declare('', exclusive=True)
 		self.callback_queue = result.method.queue
 
 		self.channel.basic_consume(
