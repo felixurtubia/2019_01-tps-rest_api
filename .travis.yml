@@ -24,7 +24,9 @@ jobs:
         #- docker run -d --name tps-restapi-repository -t felixurtubia/tps-restapi-repository
         - sleep 15
       after_script:
-        - docker run --name owasp --link dec-restful-api --net 2019_01-tps-rest_api_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
+        - docker network ls
+        #- docker run --name owasp --link dec-restful-api --net 2019_01-tps-rest_api_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
+        - docker run --name owasp --link dec-restful-api -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
 
 #Using heroku deploy 
 deploy:
