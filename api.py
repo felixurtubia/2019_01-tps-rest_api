@@ -250,7 +250,7 @@ class RpcClient_q13(object):
 				reply_to=self.callback_queue,
 				correlation_id=self.corr_id,
 			),
-			body=json.dumps(data)
+			body=data
 			)
 		while self.response is None:
 			self.connection.process_data_events()
