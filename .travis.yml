@@ -18,11 +18,13 @@ jobs:
     #  script: pytest -k integration_test #Agregar modulo de pruebas de integracion
     - stage: zap owasp test
       script:
-        - docker build -t felixurtubia/tps-restapi-repository .
-        - docker run -d --name tps-restapi-repository -t felixurtubia/tps-restapi-repository
+        #- docker build -t felixurtubia/tps-restapi-repository .
+        - docker-compose build
+        - docker-compose up -d
+        #- docker run -d --name tps-restapi-repository -t felixurtubia/tps-restapi-repository
         - sleep 15
       after_script:
-        - docker run --name owasp --link tps-restapi-repository -t owasp/zap2docker-weekly zap-full-scan.py -t http://localhost:5000
+        - docker run --name owasp --link dec-restful-api --net 2019_01-tps-rest_api_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
 
 #Using heroku deploy 
 deploy:

@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, render_template
 import pika, os
 from urllib.parse import urlparse
 import json
@@ -257,46 +257,12 @@ class RpcClient_q13(object):
 		return self.response
 
 
-def publicar_recibir(data, queue_out, queue_in):
-	"""
-	receives data in any data type and sends a json object
-	returns response from queue_in in json object
-	"""
-	url_str = os.environ.get('CLOUDAMQP_URL', 'amqp://riikuyvl:WtYUU4rdx0-UOTPE0yrObjMZt4WXuAxh@crane.rmq.cloudamqp.com/riikuyvl')
-	url = urlparse(url_str)
-	params = pika.ConnectionParameters(host=url.hostname, virtual_host=url.path[1:],
-	    credentials=pika.PlainCredentials(url.username, url.password))
-	connection = pika.BlockingConnection(params)
-	channel = connection.channel()
-	channel.queue_declare(queue=queue_out)
-	channel.basic_publish(
-		exchange='', 
-		routing_key=queue_out, 
-		body=json.dumps(data)
-		)
-	channel.queue_declare(queue=queue_in)
-	method, properties, body = channel.basic_get(
-		queue=queue_in,
-		auto_ack=False
-		)
-	while(method.NAME == 'Basic.GetEmpty'):
-		method, properties, body = channel.basic_get(
-		queue=queue_in,
-		auto_ack=True
-		)
-	
-	if(body is None):
-		body = {}
-	connection.close()
-	return body
-
-
-
-
-
 @app.route('/')
 def hello_world():
-	return "Hello, World!"
+	response = render_template('index.html')
+	response.headers['Content-Security-Policy'] = "default-src 'self'"
+	response.headers['X-XSS-Protection'] = '1; mode=block'
+	return response
 
 #Buscar un mazo de usuario (q6) -> se espera respuesta
 @app.route('/user_deck/<id>')
@@ -383,5 +349,8 @@ def search_card(field):
 	return respuesta
 
 if __name__ == '__main__':
-	app.run()
+	app.config.update(
+	    SESSION_COOKIE_HTTPONLY=True,
+		)
+	app.run(host='0.0.0.0')
 
