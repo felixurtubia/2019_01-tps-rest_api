@@ -3,11 +3,16 @@ python:
   - "3.6"
 services:
   - docker
+addons:
+  apt:
+    packages:
+      - rabbitmq-server
 
 stages:
   - unit test
   - integration test
   - zap owasp test
+  - deploy
 
 
 jobs:
@@ -27,9 +32,10 @@ jobs:
         - docker network ls
         #- docker run --name owasp --link dec-restful-api --net 2019_01-tps-rest_api_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
         - docker run --name owasp --link deck-restful-api --net 201901tpsrestapi_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
-
+    - stage: deploy to staging
+      script: skip
+      deploy:
+        provider: heroku
+        api_key: 6d119b62-8c80-46c1-b021-b82dc30ca88e
+        app: tps-restfulapi
 #Using heroku deploy 
-deploy:
-  provider: heroku
-  api_key: 6d119b62-8c80-46c1-b021-b82dc30ca88e
-  app: tps-restfulapi
