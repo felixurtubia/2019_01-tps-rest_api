@@ -40,11 +40,4 @@ def test_get_card_id():
 
 	assert int(respuesta['id']) == id_carta_sabido
 
-def test_get_card_id_basic():
-	print("Prueba de integración con servicio de cartas, con una carta ejemplo Exodia")
-	id_carta_sabido = 33396948
-	respuesta = json.loads(api.view_basic_info("Exodia the Forbidden One"))
-	respuesta = respuesta[0]
-
-	assert int(respuesta['id']) == id_carta_sabido
 
