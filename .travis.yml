@@ -22,7 +22,7 @@ jobs:
         - docker run -d --name tps-restapi-repository -t felixurtubia/tps-restapi-repository
         - sleep 15
       after_script:
-        - docker run --name owasp --link tps-restapi-repository -t owasp/zap2docker-weekly zap-full-scan.py -t http://tps-restapi-repository:5000
+        - docker run --name owasp --link tps-restapi-repository -t owasp/zap2docker-weekly zap-full-scan.py -t http://localhost:5000
 
 #Using heroku deploy 
 deploy:
