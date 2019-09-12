@@ -3,11 +3,12 @@ python:
   - "3.6"
 services:
   - docker
-addons:
-  apt:
-    packages:
-      - rabbitmq-server
+  - rabbitmq
 
+dist: xenial
+addons:
+  packages:
+    - rabbitmq-server
 stages:
   - unit test
   - integration test
@@ -32,7 +33,7 @@ jobs:
         - docker network ls
         #- docker run --name owasp --link dec-restful-api --net 2019_01-tps-rest_api_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
         - docker run --name owasp --link deck-restful-api --net 201901tpsrestapi_default -t owasp/zap2docker-weekly zap-full-scan.py -t http://deck-restful-api:5000
-    - stage: deploy to staging
+    - stage: deploy to heroku
       script: skip
       deploy:
         provider: heroku
